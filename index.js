@@ -1,6 +1,6 @@
 var isMobile = require('ismobilejs');
-module.exports = function(screenId, phoneImageUrl) {
-	if (isMobile.phone) {
+module.exports = function(screenId, phoneImageUrl, iframe) {
+	if (isMobile.phone || window.location.hash === "#mobile") {
 		return;
 	}
 	var screenElm = document.getElementById(screenId);
@@ -8,8 +8,14 @@ module.exports = function(screenId, phoneImageUrl) {
 		console.error("cannot find element with id", screenId)
 		return false;
 	}
+	screenElm.remove();
 
+	if (iframe === "iframe") {
+		screenElm = document.createElement('iframe');
+		screenElm.src = window.location.href + "#mobile";
+	}
 	// iphone screen size is 320 × 568, upper left point - 74X235
+
 	screenElm.style.setProperty("height", "568px")
 	screenElm.style.setProperty("width", "320px")
 	screenElm.style.setProperty("left", "-50%")
@@ -19,7 +25,6 @@ module.exports = function(screenId, phoneImageUrl) {
 	container.style.setProperty("position", "absolute");
 	container.style.setProperty("left", "50%");
 	container.style.setProperty("top", "112px");
-	screenElm.remove();
 	container.appendChild(screenElm);
 	document.body.appendChild(container);
 
