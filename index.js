@@ -1,5 +1,6 @@
 var isMobile = require('ismobilejs');
-module.exports = function(screenId, phoneImageUrl, iframe) {
+module.exports = function(screenId, phoneImageUrl, options) {
+	options = options || {};
 	if (isMobile.phone || window.location.hash === "#mobile") {
 		return;
 	}
@@ -8,28 +9,26 @@ module.exports = function(screenId, phoneImageUrl, iframe) {
 		console.error("cannot find element with id", screenId)
 		return false;
 	}
-	screenElm.remove();
+	if (options.iframe) {
 
-	if (iframe === "iframe") {
+		screenElm.remove();
 		screenElm = document.createElement('iframe');
 		screenElm.src = window.location.href + "#mobile";
+		screenElm.style.border = "none"
+		document.body.appendChild(screenElm);
 	}
-	// iphone screen size is 320 × 568, upper left point - 74X235
-
+	// iphone screen size is 320 × 568
 	screenElm.style.setProperty("height", "568px")
 	screenElm.style.setProperty("width", "320px")
-	screenElm.style.setProperty("left", "-50%")
-	screenElm.style.setProperty("position", "relative")
-
-	var container = document.createElement("div");
-	container.style.setProperty("position", "absolute");
-	container.style.setProperty("left", "50%");
-	container.style.setProperty("top", "112px");
-	container.appendChild(screenElm);
-	document.body.appendChild(container);
+	
+	screenElm.style.marginTop = "112px";
+	screenElm.style.marginLeft = "auto";
+	screenElm.style.marginRight = "auto";
+	screenElm.style.display = "block";
 
 	document.body.style.backgroundPosition = "center top";
 	document.body.style.backgroundRepeat = "no-repeat";
 	document.body.style.backgroundSize = "496px 796px";
-	document.body.style.backgroundImage = `url('${phoneImageUrl}')`
+	document.body.style.backgroundImage = `url('${phoneImageUrl}')`;
+	document.body.style.margin = 0;
 }
