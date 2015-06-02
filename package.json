@@ -1,0 +1,27 @@
+{
+  "name": "mobileOnly",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify main.js -g uglifyify | uglifyjs --screw-ie8 -m -c dead_code,sequences,conditionals,booleans,unused,if_return,join_vars,drop_debugger > mobileOnly.min.js",
+    "watch": "watchify main.js -d -v -o mobileOnly.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "dependencies": {
+    "browserify": "^10.2.3",
+    "ismobilejs": "^0.3.5",
+    "watchify": "^3.2.1"
+  },
+  "devDependencies": {
+    "babelify": "^6.1.2",
+    "uglifyify": "^3.0.1",
+    "uglifyjs": "^2.4.10"
+  }
+}

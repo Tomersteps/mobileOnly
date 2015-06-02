@@ -1,0 +1,1 @@
+window.mobileOnly = require('./index');
